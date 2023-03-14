@@ -1,0 +1,12 @@
+Package: FlyPrice
+Title: Query the Flight Data for the Prices
+Version: 0.0.0.9000
+Authors@R: person("Loan", "Nguyen", "nguyen263@usf.edu", role = c("aut", "cre"))
+Description: This package aims to provide at least one function to query the flight data to estimate or find the flight cost. There are a few mandatory fields for at least one function to work; those are one-way, roundtrip, or multi-city tickets for up to eight passengers and travel details: departure, arrival, dates, and airline.
+Depends: R (>= 3.1.2)
+License: CC0
+LazyData: true
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+URL: https://github.com/nguyen263/FlyPrice
