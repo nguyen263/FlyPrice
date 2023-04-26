@@ -6,18 +6,21 @@ A final project I did for my university LIS 4370 R Programming course
 ### Basic Usage
 ---
 In this package, there are 16 functions; how can you choose the right one for finding the flight price?
+<p> 1.
 <p> Use this function only if you have the data, airport of origin, destination, flight date, and passenger number for the one-way ticket.
 <p> One_Way(data, SRC, DST, date, PAX)
 <p> https://github.com/nguyen263/FlyPrice/blob/main/man/One_Way.Rd: provides documentation on this function, including what it does, its arguments, and more.
 <p> Here is a link to a demo showing how to use it:
 https://github.com/nguyen263/FlyPrice/blob/main/vignettes/demo.Rmd
 
+<p> 2.
 Use this function only if you have the data, airport of origin, destination, flight date, passenger number, and airline preference for a one-way ticket.
 <p> Preferable_Airline_One_Way(data, SRC, DST, date, PAX, airline)
 <p> https://github.com/nguyen263/FlyPrice/blob/main/man/Preferable_Airline_One_Way.Rd: provides documentation on this function, including what it does, its arguments, and more.
 <p> Here is a link to a demo showing how to use it:
 https://github.com/nguyen263/FlyPrice/blob/main/vignettes/demo2.Rmd
 
+<p> 3.
 Use this function only if you have the data, airport of origin, destination, flight dates, and passenger number for a round-trip ticket.
 <p> Roundtrip(data, SRC, DST, date, PAX, SRC2, DST2, dateReturn, PAX2)
 <p> https://github.com/nguyen263/FlyPrice/blob/main/man/Roundtrip.Rd: provides documentation on this function, including what it does, its arguments, and more.
