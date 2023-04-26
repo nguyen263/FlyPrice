@@ -1,6 +1,6 @@
 # FlyPrice
 A final project I did for my university LIS 4370 R Programming course
-<p> An R package provides functions for generating flight data for price calculations; these functions require specific fields, including travel details: departure, arrival, dates, number of passengers, and airline; a dataset is also needed.
+<p> R package provides functions for generating flight data for price calculations. These functions require specific fields, including travel details: departure, arrival, dates, number of passengers, and airline; a dataset is also needed.
 <p> IMPORTANT! This package is not available on CRAN
 
 ### Basic Usage
