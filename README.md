@@ -47,7 +47,7 @@ https://github.com/nguyen263/FlyPrice/blob/main/vignettes/demo6.Rmd
   
 Use this function only if you have the data, origin and destination, flight dates, and passenger numbers for a multicity ticket (maximum four cities).
 <p> Four_Cities(data, SRC, DST, date, PAX, SRC2, DST2, date2, PAX2, SRC3, DST3, date3, PAX3, SRC4, DST4, dateReturn, PAX4)
-<p> https://github.com/nguyen263/FlyPrice/blob/main/man/Four_Cities.Rd: provides documentation on this function, including what it does, its arguments, and more.
+<p> https://github.com/nguyen263/FlyPrice/blob/main/man/Four_Cities.Rd: this link provides documentation on this function, including what it does, its arguments, and more.
 <p> Here is a link to a demo showing how to use it:
 https://github.com/nguyen263/FlyPrice/blob/main/vignettes/demo7.Rmd
 
