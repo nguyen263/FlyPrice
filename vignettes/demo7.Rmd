@@ -1,0 +1,60 @@
+---
+title: "How to Use the Four_Cities Function"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How to Use the Four_Cities Function}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(FlyPrice)
+```
+
+Four_Cities returns both the data type and itinerary of the four cities with the most affordable prices (in accordance with the inputs provided) and computes the total cost of all four cities. Here's how it works:
+
+```{r}
+setwd("/Users/loannguyen/Documents/R files/LIS 4370 – R programming/FlyPrice") # This is my directory.
+# Replace my directory with yours. Make sure the working directory is set correctly
+
+library(dplyr)
+library(data.table)
+library(stringr)
+library(tidyr)
+library(sloop)
+
+Four_Cities <- function(data, SRC, DST, date, PAX,
+                        SRC2, DST2, date2, PAX2,
+                        SRC3, DST3, date3, PAX3,
+                        SRC4, DST4, dateReturn, PAX4) {
+  data <- read.csv(data)
+  data2 <- data[which(data$Source == SRC & data$Destination == DST & data$Date_of_Journey == date),]
+  data2 <- data2 %>% mutate(Total = Price * PAX)
+  data2 <- data2 %>% slice_min(Price, n = 1) %>% sample_n(size = 1)
+  data3 <- data[which(data$Source == SRC2 & data$Destination == DST2 & data$Date_of_Journey == date2),]
+  data3 <- data3 %>% mutate(Total = Price * PAX2)
+  data3 <- data3 %>% slice_min(Price, n = 1) %>% sample_n(size = 1)
+  data4 <- data[which(data$Source == SRC3 & data$Destination == DST3 & data$Date_of_Journey == date3),]
+  data4 <- data4 %>% mutate(Total = Price * PAX3)
+  data4 <- data4 %>% slice_min(Price, n = 1) %>% sample_n(size = 1)
+  data5 <- data[which(data$Source == SRC4 & data$Destination == DST4 & data$Date_of_Journey == dateReturn),]
+  data5 <- data5 %>% mutate(Total = Price * PAX4)
+  data5 <- data5 %>% slice_min(Price, n = 1) %>% sample_n(size = 1)
+  data6 <- list(data2, data3, data4, data5)
+  data6 <- Reduce(function(x, y) merge(x, y, all = T), data6)
+  data6 <- data6[order(as.Date(data6$Date_of_Journey, format = "%m/%d/%Y")),]
+  data6$Price <- as.character(data6$Price)
+  data6 <- data6 %>% add_row(Price = "USD Total Price:", Total = sum(data6$Total))
+  data6[5, 1:10] <- replace_na("")
+  return(c(otype(data6), View(data6)))
+}
+
+Four_Cities("Flightist.csv", "Banglore", "New Delhi", "03/21/2019", 10, "Delhi", "Cochin", "03/27/2019", 10, "Mumbai", "Hyderabad", "05/01/2019", 10, "Kolkata", "Banglore", "05/18/2019", 10)
+```

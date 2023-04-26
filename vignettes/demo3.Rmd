@@ -1,0 +1,53 @@
+---
+title: "How to Use the Roundtrip Function"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How to Use the Roundtrip Function}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(FlyPrice)
+```
+
+A Roundtrip command will return both the data type and the most cost-effective airline tickets based on the matching inputs for both departure and arrival. Here's how it works:
+
+```{r}
+setwd("/Users/loannguyen/Documents/R files/LIS 4370 – R programming/FlyPrice") # This is my directory.
+# Replace my directory with yours. Make sure the working directory is set correctly
+
+library(dplyr)
+library(data.table)
+library(stringr)
+library(tidyr)
+library(sloop)
+
+Roundtrip <- function(data, SRC, DST, date, PAX, SRC2, DST2, dateReturn, PAX2) {
+  data <- read.csv(data)
+  data2 <- data[which(data$Source == SRC &
+                        data$Destination == DST &
+                        data$Date_of_Journey == date),]
+  data2 <- data2 %>% mutate(Total = Price * PAX)
+  data2 <- data2 %>% slice_min(Total, n = 3)
+  data2 <- rbind("Departure flights", data2)
+  data2[1, 2:ncol(data2)] <- str_remove_all(data2[1, 2:ncol(data2)], "Departure flights")
+  data3 <- data[which(data$Source == SRC2 &
+                        data$Destination == DST2 &
+                        data$Date_of_Journey == dateReturn),]
+  data3 <- data3 %>% mutate(Total = Price * PAX2)
+  data3 <- data3 %>% slice_min(Total, n = 3)
+  data3 <- rbind("Return flights", data3)
+  data3[1, 2:ncol(data3)] <- str_remove_all(data3[1, 2:ncol(data3)], "Return flights")
+  return(c(otype(data2), otype(data3), View(data2), View(data3)))
+}
+
+Roundtrip("Flightist.csv", "Banglore", "New Delhi", "03/03/2019", 3, "Kolkata", "Banglore", "03/24/2019", 3)
+```

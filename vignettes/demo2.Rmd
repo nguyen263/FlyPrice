@@ -1,8 +1,8 @@
 ---
-title: "How to Use the One_Way Function"
+title: "How to Use the Preferable_Airline_One_Way Function"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{How to Use the One_Way Function}
+  %\VignetteIndexEntry{How to Use the Preferable_Airline_One_Way Function}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 library(FlyPrice)
 ```
 
-The One_Way function calculates flight prices from the cheapest to the most expensive based on matching inputs; it does not only do this but also returns the data type. Here's how it works:
+Preferable_Airline_One_Way returns the data type and the most cost-effective plane tickets ranging from the cheapest to the most expensive based on matching inputs. Here's how it works:
 
 ```{r}
 setwd("/Users/loannguyen/Documents/R files/LIS 4370 – R programming/FlyPrice") # This is my directory.
@@ -30,16 +30,17 @@ library(stringr)
 library(tidyr)
 library(sloop)
 
-One_Way <- function(data, SRC, DST, date, PAX) {
+Preferable_Airline_One_Way <- function(data, SRC, DST, date, PAX, airline) {
   data <- read.csv(data)
   data2 <- data[which(data$Source == SRC &
                         data$Destination == DST &
-                        data$Date_of_Journey == date),]
+                        data$Date_of_Journey == date &
+                        data$Airline == airline),]
   data2 <- data2 %>% mutate(Total = Price * PAX)
   data2 <- setorder(data2, Price, Total)
   rownames(data2) <- NULL
   return(c(otype(data2), View(data2)))
 }
 
-One_Way("Flightist.csv", "Banglore", "New Delhi", "03/03/2019", 2)
+Preferable_Airline_One_Way("Flightist.csv", "Banglore", "New Delhi", "03/03/2019", 2, "Vistara Premium economy")
 ```

@@ -1,0 +1,76 @@
+---
+title: "How to Use the Eight_Cities_with_Preferred_Airline Function"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How to Use the Eight_Cities_with_Preferred_Airline Function}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(FlyPrice)
+```
+
+Eight_Cities_with_Preferred_Airline returns both the data type and itinerary of the eight cities with the most affordable prices (in accordance with the inputs provided) and computes the total cost of all those cities. Here's how it works:
+
+```{r}
+setwd("/Users/loannguyen/Documents/R files/LIS 4370 – R programming/FlyPrice") # This is my directory.
+# Replace my directory with yours. Make sure the working directory is set correctly
+
+library(dplyr)
+library(data.table)
+library(stringr)
+library(tidyr)
+library(sloop)
+
+Eight_Cities_with_Preferred_Airline <- function(data, SRC, DST, date, PAX, airline,
+                                                SRC2, DST2, date2, PAX2, airline2,
+                                                SRC3, DST3, date3, PAX3, airline3,
+                                                SRC4, DST4, date4, PAX4, airline4,
+                                                SRC5, DST5, date5, PAX5, airline5,
+                                                SRC6, DST6, date6, PAX6, airline6,
+                                                SRC7, DST7, date7, PAX7, airline7,
+                                                SRC8, DST8, dateReturn, PAX8, airline8) {
+  data <- read.csv(data)
+  data2 <- data[which(data$Source == SRC & data$Destination == DST & data$Date_of_Journey == date & data$Airline == airline),]
+  data2 <- data2 %>% mutate(Total = Price * PAX)
+  data2 <- data2 %>% slice_min(Price, n = 1) %>% sample_n(size = 1)
+  data3 <- data[which(data$Source == SRC2 & data$Destination == DST2 & data$Date_of_Journey == date2 & data$Airline == airline2),]
+  data3 <- data3 %>% mutate(Total = Price * PAX2)
+  data3 <- data3 %>% slice_min(Price, n = 1) %>% sample_n(size = 1)
+  data4 <- data[which(data$Source == SRC3 & data$Destination == DST3 & data$Date_of_Journey == date3 & data$Airline == airline3),]
+  data4 <- data4 %>% mutate(Total = Price * PAX3)
+  data4 <- data4 %>% slice_min(Price, n = 1) %>% sample_n(size = 1)
+  data5 <- data[which(data$Source == SRC4 & data$Destination == DST4 & data$Date_of_Journey == date4 & data$Airline == airline4),]
+  data5 <- data5 %>% mutate(Total = Price * PAX4)
+  data5 <- data5 %>% slice_min(Price, n = 1) %>% sample_n(size = 1)
+  data6 <- data[which(data$Source == SRC5 & data$Destination == DST5 & data$Date_of_Journey == date5 & data$Airline == airline5),]
+  data6 <- data6 %>% mutate(Total = Price * PAX5)
+  data6 <- data6 %>% slice_min(Price, n = 1) %>% sample_n(size = 1)
+  data7 <- data[which(data$Source == SRC6 & data$Destination == DST6 & data$Date_of_Journey == date6 & data$Airline == airline6),]
+  data7 <- data7 %>% mutate(Total = Price * PAX6)
+  data7 <- data7 %>% slice_min(Price, n = 1) %>% sample_n(size = 1)
+  data8 <- data[which(data$Source == SRC7 & data$Destination == DST7 & data$Date_of_Journey == date7 & data$Airline == airline7),]
+  data8 <- data8 %>% mutate(Total = Price * PAX7)
+  data8 <- data8 %>% slice_min(Price, n = 1) %>% sample_n(size = 1)
+  data9 <- data[which(data$Source == SRC8 & data$Destination == DST8 & data$Date_of_Journey == dateReturn & data$Airline == airline8),]
+  data9 <- data9 %>% mutate(Total = Price * PAX8)
+  data9 <- data9 %>% slice_min(Price, n = 1) %>% sample_n(size = 1)
+  data10 <- list(data2, data3, data4, data5, data6, data7, data8, data9)
+  data10 <- Reduce(function(x, y) merge(x, y, all = T), data10)
+  data10 <- data10[order(as.Date(data10$Date_of_Journey, format = "%m/%d/%Y")),]
+  data10$Price <- as.character(data10$Price)
+  data10 <- data10 %>% add_row(Price = "USD Total Price:", Total = sum(data10$Total))
+  data10[9, 1:10] <- replace_na("")
+  return(c(otype(data10), View(data10)))
+}
+
+Eight_Cities_with_Preferred_Airline("Flightist.csv", "Banglore", "New Delhi", "03/01/2019", 3, "IndiGo", "Delhi", "Cochin", "03/03/2019", 3, "Vistara", "Chennai", "Kolkata", "03/21/2019", 3, "Vistara", "Mumbai", "Hyderabad", "03/27/2019", 3, "SpiceJet", "Kolkata", "Banglore", "04/12/2019", 3, "Air Asia", "Delhi", "Cochin", "04/21/2019", 3, "GoAir", "Chennai", "Kolkata", "05/03/2019", 3, "Air India", "Kolkata", "Banglore", "05/06/2019", 2, "Vistara")
+```
